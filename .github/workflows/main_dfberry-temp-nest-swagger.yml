@@ -1,12 +1,13 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - dfberry-temp-nest-swagger
+name: Nest OpenAPI /api
 
-# IMPORTANT
+# IMPORTANT - nest-openapi
 # 1. Required App settings: SCM_DO_BUILD_DURING_DEPLOYMENT=true 
 # 2. Required Artifact settings: don't include node_modules in the artifact
 # 3. Required app startup command uses node instead of nest b/c nest cli isn't installed on server
+# 4. OpenAPI explorer available at /api
 
 on:
   push:
