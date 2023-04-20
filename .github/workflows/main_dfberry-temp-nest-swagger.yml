@@ -3,6 +3,11 @@
 
 name: Build and deploy Node.js app to Azure Web App - dfberry-temp-nest-swagger
 
+# IMPORTANT
+# 1. Required App settings: SCM_DO_BUILD_DURING_DEPLOYMENT=true 
+# 2. Required Artifact settings: don't include node_modules in the artifact
+# 3. Required app startup command uses node instead of nest b/c nest cli isn't installed on server
+
 on:
   push:
     branches:
