@@ -27,13 +27,14 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-          npm run cicd:clean
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-nestjs-openapi
-          path: ./nest-openapi
+          path: |
+            ./nest-openapi
+            !./nest-openapi/node_modules
 
   # configapp: 
   #   runs-on: ubuntu-latest
