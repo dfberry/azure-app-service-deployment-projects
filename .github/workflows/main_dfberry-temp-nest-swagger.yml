@@ -23,6 +23,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          cd nest-openapi
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -30,8 +31,31 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: node-app
-          path: .
+          name: node-nestjs-openapi
+          path: ./nest-openapi
+
+  configapp: 
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+
+      # Learn more: https://github.com/marketplace/actions/azure-cli-action#configure-azure-credentials-as-github-secret
+
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Define secret variable in repository settings as per action documentation
+
+      - name: 'Configure Azure App Service'
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp config appsettings set -g dfberry-enterprise-temp -n dfberry-temp-nest-swagger --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,10 +65,11 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: node-app
+          name: node-nestjs-openapi
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
